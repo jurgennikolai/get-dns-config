@@ -1,0 +1,11 @@
+Hostname,DNS 
+{% for host in groups.all %}
+{% with host_data=hostvars[host] %}
+{% if host_data.dns_result is defined %}
+{{ host_data.inventory_hostname }},{{ host_data.dns_result.stdout_lines | join(';') }}
+{% else %}
+{{ hostvars[host].inventory_hostname }},none 
+{% endif %}
+{% endwith %}
+{% endfor %}
+

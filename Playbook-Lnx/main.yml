@@ -1,0 +1,19 @@
+---
+- name: Get All DNS
+  hosts: all
+  become: true
+  tasks:
+    - name: Using Command Cat 
+      shell:  cat /etc/resolv.conf | grep -oP 'nameserver\s\K\S+'
+      register: dns_result
+      ignore_errors: true
+
+- name: Create Report
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Using Template J2
+      template:
+        src: report_template.csv.j2
+        dest: report.csv 
+
